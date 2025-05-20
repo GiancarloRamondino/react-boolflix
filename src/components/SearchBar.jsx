@@ -29,6 +29,35 @@ const SearchBar = () => {
             });
     };
 
+    // Funzione di utilità per ottenere la bandiera dalla lingua
+    const getFlagEmoji = (lang) => {
+    if (!lang) return null;
+    // Mappa delle lingue più comuni a codice paese
+    const langToCountryCode = {
+        en: "us",
+        it: "it",
+        fr: "fr",
+        es: "es",
+        de: "de",
+        ja: "jp",
+        ko: "kr",
+        zh: "cn",
+        ru: "ru",
+        pt: "pt",
+        hi: "in",
+    };
+    const countryCode = langToCountryCode[lang];
+    if (!countryCode) return null;
+    return (
+        <img
+            src={`https://flagcdn.com/32x24/${countryCode}.png`}
+            alt={countryCode.toUpperCase() + " flag"}
+            style={{ width: 32, height: 20, verticalAlign: "middle", objectFit: "cover", border: "1px solid #ccc" }}
+            onError={e => { e.target.style.display = 'none'; }}
+        />
+        );
+    };
+
     return (
         <div style={{ maxWidth: 600, margin: "0 auto", padding: 24 }}>
             <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
@@ -60,9 +89,19 @@ const SearchBar = () => {
                                     <br />
                                     <strong>Titolo Originale:</strong> {item.original_title} 
                                     <br />
-                                    <strong>Lingua:</strong> {item.original_language} 
-                                    <br />
+
                                     <strong>Voto:</strong> {item.vote_average}
+                                    <br />
+                                    <strong>Lingua:</strong>{" "}
+                                    {getFlagEmoji(item.original_language) ? (
+                                        <span style={{ fontSize: 24 }}>
+                                            {getFlagEmoji(item.original_language)}
+                                        </span>
+                                    ) : (
+                                        <span style={{ color: "#888" }}>
+                                            {item.original_language}
+                                        </span>
+                                    )}
                                 </li>
                             ) : null
                     )}
