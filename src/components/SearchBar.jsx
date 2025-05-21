@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -68,12 +70,19 @@ const SearchBar = () => {
         ru: "ru",
         pt: "pt",
         hi: "in",
+        el: "gr",
+        ar: "ae",
+        tr: "tr",
+        nl: "nl",
+        pl: "pl",
+        da: "dk",
+        sv: "se",
     };
     const countryCode = langToCountryCode[lang];
     if (!countryCode) return null;
     return (
         <img
-            src={`https://flagcdn.com/32x24/${countryCode}.png`}
+            src={`https://flagcdn.com/32x24/${countryCode}.png`} //API per le bandiere
             alt={countryCode.toUpperCase() + " flag"}
             style={{ width: 32, height: 20, verticalAlign: "middle", objectFit: "cover", border: "1px solid #ccc" }}
             onError={e => { e.target.style.display = 'none'; }}
@@ -110,12 +119,25 @@ const SearchBar = () => {
                                 <li key={item.id} style={{ marginBottom: 16 }}>
                                     <strong>Titolo:</strong> {item.title} 
                                     <br />
+                                    {item.poster_path ? (
+                                        <img
+                                            src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
+                                            alt={item.title}
+                                            style={{ width: 120, borderRadius: 8, margin: "8px 0" }}
+                                        />
+                                    ) : (
+                                        <span style={{ color: "#888" }}>Nessuna immagine</span>
+                                    )}
+                                    <br />
                                     <strong>Titolo Originale:</strong> {item.original_title} 
                                     <br />
 
-                                    <strong>Voto:</strong> {item.vote_average !== undefined && item.vote_average !== null
-                                        ? Math.ceil(item.vote_average / 2)
-                                        : "N/A"}
+                                    <strong>Voto:</strong>{" "}
+                                    {[...Array(Math
+                                        .max(1, Math.ceil((item.vote_average ?? 0) / 2)))]
+                                        .map((_, i) => (
+                                        <FontAwesomeIcon icon={faStar} key={i} style={{ color: "#FFD700", marginRight: 2 }} />
+                                    ))}
                                     <br />
                                     <strong>Tipologia:</strong>{" "}
                                     {item.name && item.original_name ? "Serie TV" : "Film"}
