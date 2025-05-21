@@ -8,26 +8,29 @@ function Card({ item = {}, getFlagEmoji = () => "" }) {
 
     return (
         <div className="card">
-            {item.poster_path ? (
+            <div className="card-img">
+                {item.poster_path ? (
                 <img
                     src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
                     alt={item.title || item.name || "Poster"}
-                    style={{ width: 342, borderRadius: 8, margin: "8px 0" }}
                 />
-            ) : (
-                <span>Nessuna immagine</span>
-            )}
+                ) : (
+                    <span>Nessuna immagine</span>
+               )}
+            </div>
             <div className="card-content d-flex justify-left flex-column">
                 <br />
                 <strong>Titolo:</strong> {item.title || item.name || "N/A"}
                 <br />
                 <strong>Titolo Originale:</strong> {item.original_title || item.original_name || "N/A"}
                 <br />
-                <strong>Voto:</strong>{" "}
-                {[...Array(Math.max(1, Math.ceil((item.vote_average ?? 0) / 2)))]
-                .map((_, i) => (
-                    <FontAwesomeIcon icon={faStar} key={i} className="star" />
-                ))}
+                <div>
+                    <strong  className="">Voto:</strong>{" "}
+                    {[...Array(Math.max(1, Math.ceil((item.vote_average ?? 0) / 2)))]
+                        .map((_, i) => (
+                        <FontAwesomeIcon icon={faStar} key={i} className="star " />
+                  ))}
+                </div>              
                 <br />
                 <strong>Tipologia:</strong>{" "}
                 {isSerieTV ? "Serie TV" : "Film"}

@@ -111,9 +111,9 @@ const SearchBar = () => {
 
     return (
         <>
-            <header  className="row justify-space-between">
-                <div className="col-4"> ciao </div>
-                <div className="col-4">
+            <header className="row justify-content-between d-flex bg-color-black" >
+                <div className="col-2 text-danger "> BOOLFLIX </div>
+                <div className="d-flex col-8 justify-content-end ">
                     <input
                         type="text"
                         placeholder="Cerca un film..."
@@ -125,32 +125,23 @@ const SearchBar = () => {
                                 handleSearch();
                             }
                         }}
-                        
-                        style={{
-                            padding: "8px",
-                            fontSize: 16,
-                            width: "100%",
-                            maxWidth: 200,
-                            marginBottom: 16,
-                    }}
                     />
                     <button onClick={handleSearchClick} style={{ padding: "8px 16px", fontSize: 16 }}>
                         Cerca
                     </button>
-                </div>
-                
+                </div>  
                 
             </header>
-            <main >
+            <main  >
                 {showResults && (
                     loading ? (
                         <div>Caricamento...</div>
                     ) : (
-                        <ul className="row justify-space-around wrap" >
+                        <ul className="d-flex flex-wrap">
                             {filteredData.map(
                                 (item) => (
                                     item && item.id ? (
-                                        <li className="col-3" key={item.id} style={{ listStyle: "none", marginBottom: 16 }}>
+                                        <li key={item.id}>
                                             <Card
                                                item={item}
                                                getFlagEmoji={getFlagEmoji}
