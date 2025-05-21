@@ -11,21 +11,44 @@ const SearchBar = () => {
             return;
         }
         setLoading(true);
-        fetch(
-            `https://api.themoviedb.org/3/search/movie?api_key=cfff45004cf721ecf9af1ebd8f1261f1&query=${encodeURIComponent(
-                searchTerm
-            )}`
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                const results = data && data.results ? data.results : [];
-                setFilteredData(results);
+
+        // FILM API
+        const movieUrl = `https://api.themoviedb.org/3/search/movie?api_key=cfff45004cf721ecf9af1ebd8f1261f1&query=${encodeURIComponent(
+            searchTerm
+        )}`;
+
+        // SERIE API
+        const tvUrl = `https://api.themoviedb.org/3/search/tv?api_key=cfff45004cf721ecf9af1ebd8f1261f1&language=it_IT&query=${encodeURIComponent(
+            searchTerm
+        )}`;
+
+        fetch(movieUrl)
+            .then(movieRes => movieRes.json())
+            .then(movieData => {
+            fetch(tvUrl)
+                .then(tvRes => tvRes.json())
+                .then(tvData => {
+                const movieResults = movieData && movieData.results ? movieData.results : [];
+                const tvResults = tvData && tvData.results
+                    ? tvData.results.map(tv => ({
+                    ...tv,
+                    title: tv.name,
+                    original_title: tv.original_name,
+                    }))
+                    : [];
+                setFilteredData([...movieResults, ...tvResults]);
                 setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
+                })
+                .catch(error => {
+                console.error("Error fetching TV data:", error);
                 setFilteredData([]);
                 setLoading(false);
+                });
+            })
+            .catch(error => {
+            console.error("Error fetching movie data:", error);
+            setFilteredData([]);
+            setLoading(false);
             });
     };
 
@@ -56,7 +79,7 @@ const SearchBar = () => {
             onError={e => { e.target.style.display = 'none'; }}
         />
         );
-    };
+    }; // fine funzione bandiera
 
     return (
         <div style={{ maxWidth: 600, margin: "0 auto", padding: 24 }}>
@@ -90,7 +113,12 @@ const SearchBar = () => {
                                     <strong>Titolo Originale:</strong> {item.original_title} 
                                     <br />
 
-                                    <strong>Voto:</strong> {item.vote_average}
+                                    <strong>Voto:</strong> {item.vote_average !== undefined && item.vote_average !== null
+                                        ? Math.ceil(item.vote_average / 2)
+                                        : "N/A"}
+                                    <br />
+                                    <strong>Tipologia:</strong>{" "}
+                                    {item.name && item.original_name ? "Serie TV" : "Film"}
                                     <br />
                                     <strong>Lingua:</strong>{" "}
                                     {getFlagEmoji(item.original_language) ? (
