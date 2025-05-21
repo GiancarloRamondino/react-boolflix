@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import Card from "./Card";
 
 const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -77,6 +76,19 @@ const SearchBar = () => {
         pl: "pl",
         da: "dk",
         sv: "se",
+        ta: "in",
+        cs: "cz",
+        fi: "fi",
+        ml: "in",
+        no: "no",
+        ne: "np",
+        ro: "ro",
+        bn: "bd",
+        th: "th",
+        hu: "hu",
+        vi: "vn",
+        xx: "xx",
+
     };
     const countryCode = langToCountryCode[lang];
     if (!countryCode) return null;
@@ -84,80 +96,74 @@ const SearchBar = () => {
         <img
             src={`https://flagcdn.com/32x24/${countryCode}.png`} //API per le bandiere
             alt={countryCode.toUpperCase() + " flag"}
-            style={{ width: 32, height: 20, verticalAlign: "middle", objectFit: "cover", border: "1px solid #ccc" }}
+            className="flag"
             onError={e => { e.target.style.display = 'none'; }}
         />
         );
     }; // fine funzione bandiera
 
-    return (
-        <div style={{ maxWidth: 600, margin: "0 auto", padding: 24 }}>
-            <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
-                <input
-                    type="text"
-                    placeholder="Cerca un film..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            handleSearch();
-                        }
-                    }}
-                    style={{ flex: 1, padding: 8, fontSize: 16 }}
-                />
-                <button onClick={handleSearch} style={{ padding: "8px 16px", fontSize: 16 }}>
-                    Cerca
-                </button>
-            </div>
-            {loading ? (
-                <div>Caricamento...</div>
-            ) : (
-                <ul>
-                    {filteredData.map(
-                        (item) =>
-                            item && item.id ? (
-                                <li key={item.id} style={{ marginBottom: 16 }}>
-                                    <strong>Titolo:</strong> {item.title} 
-                                    <br />
-                                    {item.poster_path ? (
-                                        <img
-                                            src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
-                                            alt={item.title}
-                                            style={{ width: 120, borderRadius: 8, margin: "8px 0" }}
-                                        />
-                                    ) : (
-                                        <span style={{ color: "#888" }}>Nessuna immagine</span>
-                                    )}
-                                    <br />
-                                    <strong>Titolo Originale:</strong> {item.original_title} 
-                                    <br />
+    const [showResults, setShowResults] = useState(false);
 
-                                    <strong>Voto:</strong>{" "}
-                                    {[...Array(Math
-                                        .max(1, Math.ceil((item.vote_average ?? 0) / 2)))]
-                                        .map((_, i) => (
-                                        <FontAwesomeIcon icon={faStar} key={i} style={{ color: "#FFD700", marginRight: 2 }} />
-                                    ))}
-                                    <br />
-                                    <strong>Tipologia:</strong>{" "}
-                                    {item.name && item.original_name ? "Serie TV" : "Film"}
-                                    <br />
-                                    <strong>Lingua:</strong>{" "}
-                                    {getFlagEmoji(item.original_language) ? (
-                                        <span style={{ fontSize: 24 }}>
-                                            {getFlagEmoji(item.original_language)}
-                                        </span>
-                                    ) : (
-                                        <span style={{ color: "#888" }}>
-                                            {item.original_language}
-                                        </span>
-                                    )}
-                                </li>
-                            ) : null
-                    )}
-                </ul>
-            )}
-        </div>
+    const handleSearchClick = () => {
+        setShowResults(true);
+        handleSearch();
+    };
+
+    return (
+        <>
+            <header  className="row justify-space-between">
+                <div className="col-4"> ciao </div>
+                <div className="col-4">
+                    <input
+                        type="text"
+                        placeholder="Cerca un film..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                setShowResults(true);
+                                handleSearch();
+                            }
+                        }}
+                        
+                        style={{
+                            padding: "8px",
+                            fontSize: 16,
+                            width: "100%",
+                            maxWidth: 200,
+                            marginBottom: 16,
+                    }}
+                    />
+                    <button onClick={handleSearchClick} style={{ padding: "8px 16px", fontSize: 16 }}>
+                        Cerca
+                    </button>
+                </div>
+                
+                
+            </header>
+            <main >
+                {showResults && (
+                    loading ? (
+                        <div>Caricamento...</div>
+                    ) : (
+                        <ul className="row justify-space-around wrap" >
+                            {filteredData.map(
+                                (item) => (
+                                    item && item.id ? (
+                                        <li className="col-3" key={item.id} style={{ listStyle: "none", marginBottom: 16 }}>
+                                            <Card
+                                               item={item}
+                                               getFlagEmoji={getFlagEmoji}
+                                            />
+                                        </li>
+                                    ) : null
+                                )
+                            )}
+                        </ul>
+                    )
+                )}
+            </main>
+        </>
     );
 };
 

@@ -11,12 +11,7 @@
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+
 
 @keyframes logo-spin {
   from {
@@ -35,8 +30,46 @@
 
 .card {
   padding: 2em;
+  position: relative;
 }
 
 .read-the-docs {
   color: #888;
 }
+
+.flag{
+  width: 32px;
+  height: 20px;
+  vertical-align: middle;
+  object-fit: cover;
+  border: 1px solid #ccc;
+} 
+
+.star{
+  color: yellow;
+  margin-right: 2
+}
+
+.card-img-top{
+  width: 320px;
+  border-radius: 8;
+  margin: "8px 0"; 
+}
+
+.card-content{
+  position: absolute;
+  top: 40px;
+  left: 375px;
+  opacity: 0;
+  width: 340px;
+  height: 510px;
+  background-color: black;
+  z-index: 1;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.card-content:hover{
+  opacity: 1;
+}
+

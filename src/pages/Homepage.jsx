@@ -1,10 +1,13 @@
+
 import SearchBar from "../components/SearchBar";
 
 const Homepage = () => {
     return (
-        <header>
-            <SearchBar/>
-        </header>
+        <>
+            <div className="d-flex justify-content-between align-items-center">
+              <SearchBar />
+            </div>      
+        </>
     )  
         
 };
