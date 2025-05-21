@@ -112,8 +112,8 @@ const SearchBar = () => {
     return (
         <>
             <header className="row justify-content-between d-flex bg-color-black" >
-                <div className="col-2 text-danger "> BOOLFLIX </div>
-                <div className="d-flex col-8 justify-content-end ">
+                <div className="text-danger "> BOOLFLIX </div>
+                <div className="d-flex justify-content-end ">
                     <input
                         type="text"
                         placeholder="Cerca un film..."
@@ -126,7 +126,7 @@ const SearchBar = () => {
                             }
                         }}
                     />
-                    <button onClick={handleSearchClick} style={{ padding: "8px 16px", fontSize: 16 }}>
+                    <button onClick={handleSearchClick}>
                         Cerca
                     </button>
                 </div>  
